@@ -27,7 +27,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top " id="navigation-example">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="javascript:void(0)">Map</a>
+            <a class="navbar-brand" href="javascript:void(0)"><img src="../assets/img/radata.png" style="height:40px;"></a>
           </div>
           <div class="justify-content-center">
             <form class="navbar-form">
@@ -56,25 +56,25 @@
         <div class="col-sm-2"> 
           <div class="custom-control custom-switch">
             <input type="checkbox" class="custom-control-input" id="customSwitch1" onchange="filter1(this);">
-            <label class="custom-control-label" for="customSwitch1"><img src="../assets/img/maps/redtower.png">ATC</label>
+            <label class="custom-control-label" for="customSwitch1"><img src="../assets/img/maps/redtower.png"> <strong>ATC Tower</strong></label><br><p id="count1"></p>
           </div>
         </div>
         <div class="col-sm-2"> 
             <div class="custom-control custom-switch">
               <input type="checkbox" class="custom-control-input" id="customSwitch2" onchange="filter2(this);">
-              <label class="custom-control-label" for="customSwitch2"><img src="../assets/img/maps/yellowtower.png">Eaton</label>
+              <label class="custom-control-label" for="customSwitch2"><img src="../assets/img/maps/yellowtower.png"> <strong>Eaton Tower</strong></label><br><p id="count2"></p>
             </div>
           </div>
           <div class="col-sm-2"> 
             <div class="custom-control custom-switch">
               <input type="checkbox" class="custom-control-input" id="customSwitch3" onchange="filter3(this);">
-              <label class="custom-control-label" for="customSwitch3"><img src="../assets/img/maps/bluetower.png">Millicom</label>
+              <label class="custom-control-label" for="customSwitch3"><img src="../assets/img/maps/bluetower.png"> <strong>Millicom Tower</strong></label><br><p id="count3"></p>
             </div>
           </div>
           <div class="col-sm-2"> 
             <div class="custom-control custom-switch">
               <input type="checkbox" class="custom-control-input" id="customSwitch4" onchange="filter4(this);">
-              <label class="custom-control-label" for="customSwitch4"><img src="../assets/img/maps/greentower.png">HTG</label>
+              <label class="custom-control-label" for="customSwitch4"><img src="../assets/img/maps/greentower.png"> <strong>HTG Tower</strong></label><br><p id="count4"></p>
             </div>
           </div>
           <div class="col-sm-2"> 
@@ -82,13 +82,13 @@
               <input type="checkbox" class="custom-control-input" id="customSwitch5" onchange="filter5(this);">
               <label class="custom-control-label" for="customSwitch5">
                 <img src="../assets/img/maps/whitetower.png">
-              </label>
+              </label><br><p id="count5"></p>
             </div>
           </div>
           <div class="col-sm-2"> 
-            <div class="input-group">
+            <div class="input-group" style="margin-left:-70px">
               <select class="custom-select" id="inputGroupSelect04" onchange="switchTelco(this);">
-                <option selected>All Others</option>
+                <option selected>All other towers</option>
                 <option value="1">Airtel</option>
                 <option value="2">GO tv</option>
                 <option value="3">Scancom</option>
@@ -124,12 +124,13 @@
     var markers = [];
     var vall;
     var val;
+    var colnum;
 
     function filter1(checkbox){
       if(checkbox.checked == true){
         data = <?= $atcdata ?>;
-        setMarkers(data);
-        console.log(markers[1].title);
+        setMarkers(data, 1);
+        document.getElementById("count1").innerHTML = data.length;
       }else{
         removeMarkers("ATC TOWER");
       }
@@ -137,8 +138,8 @@
     function filter2(checkbox){
       if(checkbox.checked == true){
         data = <?= $eatondata ?>;
-        setMarkers(data);
-        console.log(markers);
+        setMarkers(data, 2);
+        document.getElementById("count2").innerHTML = data.length;
       }else{
         removeMarkers("EATON TOWERS GHANA LIMITED");
       }
@@ -146,7 +147,8 @@
     function filter3(checkbox){
       if(checkbox.checked == true){
         data = <?= $millidata ?>;
-        setMarkers(data);
+        setMarkers(data, 3);
+        document.getElementById("count3").innerHTML = data.length;
       }else{
         removeMarkers("MILLICOM GHANA LIMITED");
       }
@@ -154,7 +156,8 @@
     function filter4(checkbox){
       if(checkbox.checked == true){
         data = <?= $htgdata ?>;
-        setMarkers(data);
+        setMarkers(data, 4);
+        document.getElementById("count4").innerHTML = data.length;
       }else{
         removeMarkers("HTG MANAGED SERVICES LIMITED");
       }
@@ -178,9 +181,13 @@
           data = <?= $mtndata ?>;
           console.log(val);
         }
+        else{
+          data = null;
+        }
         
-        setMarkers(data);
-        console.log(markers);
+        setMarkers(data, 5);
+        document.getElementById("count5").innerHTML = data.length;
+      
       }
       else{
         removeMarkers(val);
@@ -192,7 +199,7 @@
     }
 
 
-    function setMarkers(data){
+    function setMarkers(data, num){
         var tower;
         var company;
         var siteId;
@@ -200,6 +207,7 @@
         var location;
         var status;
         var point;
+        var png;
       for(var x in data){
         tower = data[x];
         company = tower.company;
@@ -209,10 +217,22 @@
         status = tower.status;
         point = new google.maps.LatLng(tower.lat, tower.lng);
 
+        if(num == 1){
+          png ="redtower.png";
+        }else if(num == 2){
+          png ="yellowtower.png";
+        }else if(num == 3){
+          png ="bluetower.png";
+        }else if(num == 4){
+          png ="greentower.png";
+        }else if(num == 5){
+          png ="whitetower.png";
+        }
+        
         marker = new google.maps.Marker({
           position: point,
           title: tower.company,
-          icon: '../assets/img/maps/redtower.png',
+          icon: '../assets/img/maps/'+png,
           map: map
         });
         markers.push(marker);
@@ -256,6 +276,7 @@
         center: new google.maps.LatLng(7.94653, -1.02319),
         zoom: 7
       });
+      
      
     }
     
