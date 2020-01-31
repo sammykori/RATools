@@ -19,3 +19,6 @@ Route::resource('towers', 'TowersController');
 
 Route::get('/maps', 'MapsController@index');
 Route::get('/', 'MapsController@main');
+Auth::routes();
+
+Route::get('/dashboard', 'DashboardController@index')->name('home');

@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/ncal.png">
+  <link rel="icon" type="image/png" href="../assets/img/ncal.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
     RA Data Tools | Map View
@@ -33,7 +33,7 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item  ">
-            <a class="nav-link" href="./">
+            <a class="nav-link" href="./dashboard">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>

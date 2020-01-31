@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
-use App\Tower;
+use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
+use App\Tower; 
 
 class TowersController extends Controller
 {
@@ -16,18 +18,18 @@ class TowersController extends Controller
     public function index()
     {
         //
-        $towers = Tower::all();
+        $towers = DB::table('towers')->orderBy('created_at', 'desc')->paginate(15);
         return view('tables')->with('towers', $towers);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource.JJK
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -38,7 +40,30 @@ class TowersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'siteId' => 'required',
+            'company' => 'required',
+            'district' => 'required',
+            'location' => 'required',
+            'lat' => 'required',
+            'lng' => 'required',
+            'status' => 'required'
+
+        ]);
+        //Create Nwe Tower
+        $tower = new Tower;
+        $tower->company = $request->company;
+        $tower->site_id = $request->siteId;
+        $tower->district = $request->district;
+        $tower->location = $request->location;
+        $tower->lat = $request->lat;
+        $tower->lng = $request->lng;
+        $tower->status = $request->status;
+        $tower->user_id = 0;
+
+        $tower->save();
+
+        return redirect('/tables')->withSucess('New Tower Created Successfully');
     }
 
     /**

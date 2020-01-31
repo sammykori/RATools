@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/ncal.png">
+  <link rel="icon" type="image/png" href="../assets/img/ncal.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
     RA Data Tools | Tower List
@@ -13,6 +13,7 @@
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <!-- CSS Files -->
   <link href="../assets/css/material-dashboard.css?v=2.1.0" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
@@ -33,7 +34,7 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item  ">
-            <a class="nav-link" href="/">
+            <a class="nav-link" href="./dashboard">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
@@ -117,6 +118,60 @@
       <div class="content">
         <div class="container-fluid">
           <div class="row">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">+ Add New Tower</button>
+          </div>
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Add New Tower Details</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  @include('inc.message')
+                  {!! Form::open(['action' => 'TowersController@store', 'method'=> 'POST']) !!}
+                    <div class="form-group">
+                      {{Form::label('siteId', 'SiteID', ['class' => 'col-form-label', 'for' => 'recipient-name'])}}
+                      {{Form::text('siteId', '', ['class' => 'form-control', 'id' => 'recipient-name'])}}
+                    </div>
+                    <div class="form-group">
+                      {{Form::label('company', 'Company', ['class' => 'col-form-label', 'for' => 'message-text'])}}
+                      {{Form::text('company', '', ['class' => 'form-control', 'id' => 'recipient-name'])}}
+                    </div>
+                    <div class="form-group">
+                      {{Form::label('district', 'District', ['class' => 'col-form-label', 'for' => 'message-text'])}}
+                      {{Form::text('district', '', ['class' => 'form-control', 'id' => 'recipient-name'])}}
+                    </div>
+                    <div class="form-group">
+                      {{Form::label('location', 'Location', ['class' => 'col-form-label', 'for' => 'message-text'])}}
+                      {{Form::text('location', '', ['class' => 'form-control', 'id' => 'recipient-name'])}}
+                    </div>
+                    <div class="form-group">
+                      {{Form::label('lat', 'Latitude', ['class' => 'col-form-label', 'for' => 'message-text'])}}
+                      {{Form::text('lat', '', ['class' => 'form-control', 'id' => 'recipient-name'])}}
+                    </div>
+                    <div class="form-group">
+                      {{Form::label('lng', 'Longitude', ['class' => 'col-form-label', 'for' => 'message-text'])}}
+                      {{Form::text('lng', '', ['class' => 'form-control', 'id' => 'recipient-name'])}}
+                    </div>
+                    <div class="form-group">
+                      {{Form::label('status', 'Status', ['class' => 'col-form-label', 'for' => 'message-text'])}}
+                      {{Form::text('status', '', ['class' => 'form-control', 'id' => 'recipient-name'])}}
+                    </div>
+                    {{Form::submit('Save', ['class' => 'btn btn-primary'])}}
+                  {!! Form::close() !!}
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                 
+                  {{-- <button type="button" class="btn btn-primary">Send message</button> --}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
@@ -165,6 +220,7 @@
                             </td>
                           </tr>
                         @endforeach
+                        {{ $towers->links() }}
                       </tbody>
                     </table>
                   </div>
@@ -173,141 +229,6 @@
                 @else
                 <p>No Data found</p>
                 @endif
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="card card-plain">
-                <div class="card-header card-header-primary">
-                  <h4 class="card-title mt-0"> Table on Plain Background</h4>
-                  <p class="card-category"> Here is a subtitle for this table</p>
-                </div>
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table table-hover">
-                      <thead class="">
-                        <th>
-                          ID
-                        </th>
-                        <th>
-                          Name
-                        </th>
-                        <th>
-                          Country
-                        </th>
-                        <th>
-                          City
-                        </th>
-                        <th>
-                          Salary
-                        </th>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            1
-                          </td>
-                          <td>
-                            Dakota Rice
-                          </td>
-                          <td>
-                            Niger
-                          </td>
-                          <td>
-                            Oud-Turnhout
-                          </td>
-                          <td>
-                            $36,738
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            2
-                          </td>
-                          <td>
-                            Minerva Hooper
-                          </td>
-                          <td>
-                            Curaçao
-                          </td>
-                          <td>
-                            Sinaai-Waas
-                          </td>
-                          <td>
-                            $23,789
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            3
-                          </td>
-                          <td>
-                            Sage Rodriguez
-                          </td>
-                          <td>
-                            Netherlands
-                          </td>
-                          <td>
-                            Baileux
-                          </td>
-                          <td>
-                            $56,142
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            4
-                          </td>
-                          <td>
-                            Philip Chaney
-                          </td>
-                          <td>
-                            Korea, South
-                          </td>
-                          <td>
-                            Overland Park
-                          </td>
-                          <td>
-                            $38,735
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            5
-                          </td>
-                          <td>
-                            Doris Greene
-                          </td>
-                          <td>
-                            Malawi
-                          </td>
-                          <td>
-                            Feldkirchen in Kärnten
-                          </td>
-                          <td>
-                            $63,542
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            6
-                          </td>
-                          <td>
-                            Mason Porter
-                          </td>
-                          <td>
-                            Chile
-                          </td>
-                          <td>
-                            Gloucester
-                          </td>
-                          <td>
-                            $78,615
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -369,8 +290,10 @@
   <script src="../assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/material-dashboard.js?v=2.1.0"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="../assets/demo/demo.js"></script>
+  @include('sweetalert::alert') 
   <script>
     $(document).ready(function() {
       $().ready(function() {
@@ -533,6 +456,7 @@
       });
     });
   </script>
+  
 </body>
 
 </html>
