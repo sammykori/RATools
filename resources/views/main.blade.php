@@ -88,11 +88,19 @@
                 <option value="1">Ecoband</option>
                 <option value="2">AFT</option>
                 <option value="3">MTN</option>
-                <option value="1">MainOne</option>
-                <option value="2">National Security</option>
-                <option value="3">BBH</option>
-                <option value="2">VF</option>
-                <option value="3">NITA</option>
+                <option value="4">MainOne</option>
+                <option value="5">National Security</option>
+                <option value="6">BBH</option>
+                <option value="7">VF</option>
+                <option value="8">NITA</option>
+                <option value="9">DiscoveryTel</option>
+                <option value="10">GCB</option>
+                <option value="11">Iburst</option>
+                <option value="12">Internet Solutions</option>
+                <option value="13">STL</option>
+                <option value="14">Vodafone</option>
+                <option value="15">3rd Party</option>
+                <option value="16">SUPERTECH</option>
               </select>
             </div>
           </div>
@@ -209,6 +217,46 @@
         else if(vall == 8){
           val = "NITA";
           data = <?= $nita ?>;
+          console.log(val);
+        }
+        else if(vall == 9){
+          val = "DiscoveryTel";
+          data = <?= $disc ?>;
+          console.log(val);
+        }
+        else if(vall == 10){
+          val = "GCB";
+          data = <?= $gcb ?>;
+          console.log(val);
+        }
+        else if(vall == 11){
+          val = "Iburst";
+          data = <?= $iburst ?>;
+          console.log(val);
+        }
+        else if(vall == 12){
+          val = "Internet Solutions";
+          data = <?= $iss ?>;
+          console.log(val);
+        }
+        else if(vall == 13){
+          val = "STL";
+          data = <?= $stl ?>;
+          console.log(val);
+        }
+        else if(vall == 14){
+          val = "Vodafone";
+          data = <?= $voda ?>;
+          console.log(val);
+        }
+        else if(vall == 15){
+          val = "3rd Party";
+          data = <?= $third ?>;
+          console.log(val);
+        }
+        else if(vall == 16){
+          val = "SUPERTECH";
+          data = <?= $super ?>;
           console.log(val);
         }
         else{

@@ -123,4 +123,14 @@
 }
 .footer {
 background-color: #e8eced ;
+
+}
+.sidebar {
+  position: absolute;
+  width: 150px;
+  height: 100%;
+  right:0;
+  background-color: blue;
+  z-index: -1;
+  
 }

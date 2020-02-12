@@ -49,6 +49,39 @@ class MapsController extends Controller
         $nita = Tower::where('tower_owner', 'NITA')
                     // ->take(10)
                     ->get();
+        $disc = Tower::where('tower_owner', 'DiscoveryTel')
+                    // ->take(10)
+                    ->get();
+        $gcb = Tower::where('tower_owner', 'GCB')
+                    // ->take(10)
+                    ->get();
+        $iburst = Tower::where('tower_owner', 'Iburst')
+                    // ->take(10)
+                    ->get();
+        $iss = Tower::where('tower_owner', 'Internet Solutions')
+                    // ->take(10)
+                    ->get();
+        $stl = Tower::where('tower_owner', 'STL')
+                    // ->take(10)/
+                    ->get();
+        $surf = Tower::where('tower_owner', 'Surfline')
+                    // ->take(10)
+                    ->get();
+        $voda = Tower::where('tower_owner', 'Vodafone')
+                    // ->take(10)
+                    ->get();
+        $third = Tower::where('tower_owner', '3rd Party')
+                    // ->take(10)
+                    ->get();
+        $gifec = Tower::where('tower_owner', 'GIFEC')
+                    // ->take(10)
+                    ->get();
+        $gloo = Tower::where('tower_owner', 'GLO')
+                    // ->take(10)
+                    ->get();
+        $super = Tower::where('tower_owner', 'SUPERTECH')
+                    // ->take(10)
+                    ->get();
         return view('main')->with('towers', $towers)
                         ->with('atcdata', $atcdata)
                         ->with('eatondata', $eatondata)
@@ -61,7 +94,19 @@ class MapsController extends Controller
                         ->with('national', $national)
                         ->with('bbh', $bbh)
                         ->with('vf', $vf)
-                        ->with('nita', $nita);
+                        ->with('nita', $nita)
+                        ->with('disc', $disc)
+                        ->with('third', $third)
+                        ->with('gifec',$gifec)
+                        ->with('gloo', $gloo)
+                        ->with('super', $super)
+                        ->with('gcb', $gcb)
+                        ->with('iss', $iss)
+                        ->with('stl', $stl)
+                        ->with('surf',$surf)
+                        ->with('voda', $voda)
+                        ->with('iburst', $iburst);
+                        
                         
     }
 }
