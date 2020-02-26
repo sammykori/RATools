@@ -17,6 +17,9 @@ class PagesController extends Controller
         return view('map');
     }
 
+    public function new(){
+        return view('new');
+    }
         
     
 }

@@ -12,7 +12,7 @@ class MapsController extends Controller
         return view('map')->with('towers', $towers);
     }
     public function main(){
-        $towers = Tower::all()->take(30);
+        $towers = Tower::all();
         $atcdata = Tower::where('tower_owner', 'ATC')
                     // ->take(10)
                     ->get();
@@ -82,7 +82,37 @@ class MapsController extends Controller
         $super = Tower::where('tower_owner', 'SUPERTECH')
                     // ->take(10)
                     ->get();
-        return view('main')->with('towers', $towers)
+        $accra = Tower::where('region', 'Greater Accra')
+                    // ->take(10)
+                    ->get();
+        $ashanti = Tower::where('region', 'Ashanti')
+                    // ->take(10)
+                    ->get();
+        $west = Tower::where('region', 'Western')
+                    // ->take(10)
+                    ->get();
+        $east = Tower::where('region', 'Eastern')
+                    // ->take(10)
+                    ->get();
+        $volta = Tower::where('region', 'Volta')
+                    // ->take(10)
+                    ->get();
+        $central = Tower::where('region', 'Central')
+                    // ->take(10)
+                    ->get();
+        $ba = Tower::where('region', 'Brong Ahafo')
+                    // ->take(10)
+                    ->get();
+        $north = Tower::where('region', 'Northern')
+                    // ->take(10)
+                    ->get();
+        $uw = Tower::where('region', 'Upper West')
+                    // ->take(10)
+                    ->get();
+        $ue = Tower::where('region', 'Upper East')
+                    // ->take(10)
+                    ->get();
+        return view('new')->with('towers', $towers)
                         ->with('atcdata', $atcdata)
                         ->with('eatondata', $eatondata)
                         ->with('helios',$helios)
@@ -105,7 +135,18 @@ class MapsController extends Controller
                         ->with('stl', $stl)
                         ->with('surf',$surf)
                         ->with('voda', $voda)
-                        ->with('iburst', $iburst);
+                        ->with('iburst', $iburst)
+                        ->with('accra', $accra)
+                        ->with('ashanti', $ashanti)
+                        ->with('west', $west)
+                        ->with('east',$east)
+                        ->with('volta', $volta)
+                        ->with('central', $central)
+                        ->with('ba', $ba)
+                        ->with('north', $north)
+                        ->with('uw', $uw)
+                        ->with('ue',$ue);
+                        
                         
                         
     }

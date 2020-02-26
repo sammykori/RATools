@@ -14,6 +14,7 @@
 Route::get('/dashboard', 'PagesController@index');
 Route::get('/tables', 'TowersController@index');
 Route::get('/maps', 'PagesController@map');
+Route::get('/main', 'PagesController@new');
 
 Route::resource('towers', 'TowersController');
 
