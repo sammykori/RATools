@@ -6,14 +6,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Dashboard - SB Admin</title>
+        <title>NCA COMMUNICATION TOWER MAP</title>
         <link href="../assets/css/styles.css" rel="stylesheet" />
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-light bg-light" style="box-shadow: 0px 0px 10px -1px">
-            <a class="navbar-brand" href="index.html"><img src="../assets/img/towlogo.png" style="height:50px"></a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button
+            <a class="navbar-brand" href="#"><img src="../assets/img/towlogo.png" style="height:50px"></a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button
             ><!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
                 <div class="input-group">
@@ -31,8 +31,14 @@
                     </div>
                 </div>
             </form>
+            <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+                <div class="input-group">
+                    <input id="radius" class="form-control" type="text" value= "" placeholder="400m radius" aria-label="Search" aria-describedby="basic-addon2" readonly/>
+                    <input id="center" class="form-control" type="text" value= "" placeholder="Center:" aria-label="Search" aria-describedby="basic-addon2" readonly/>
+                </div>
+            </form>
             <!-- Navbar-->
-            <ul class="navbar-nav ml-auto ml-md-0">
+            {{-- <ul class="navbar-nav ml-auto ml-md-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
@@ -41,19 +47,13 @@
                         <a class="dropdown-item" href="login.html">Logout</a>
                     </div>
                 </li>
-            </ul>
+            </ul> --}}
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav" style="box-shadow: 0px 0px 10px -1px">
                 <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <div class="row" style="padding-left: 20px; padding-bottom: 10px">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" checked class="custom-control-input" id="customSwitch20" onchange="nation(this);">
-                                    <label class="custom-control-label" for="customSwitch20"><strong style="color:brown">Nationwide</strong></label><br><p id="count6"></p>
-                                  </div>
-                            </div>
                             <div class="row" style="padding-left: 20px; padding-bottom: 10px">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="customSwitch6" onchange="region1(this);">
@@ -147,7 +147,7 @@
                             <div class="col-sm-2"> 
                               <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input" id="customSwitch4" onchange="filter4(this);">
-                                <label class="custom-control-label" for="customSwitch4"><img src="../assets/img/maps/greentower.png"> <strong style="color:#314f57">Glo</strong></label><br><p id="count4"></p>
+                                <label class="custom-control-label" for="customSwitch4"><img src="../assets/img/maps/greentower.png"> <strong style="color:#314f57">Glomobile</strong></label><br><p id="count4"></p>
                               </div>
                             </div>
                             <div class="col-sm-2"> 
@@ -198,49 +198,507 @@
             var vall;
             var val;
             var colnum;
+            var fil = [];
+            var circles = [];
         
+
+        // FUNCTIONS FOR TOWER COMPANY BUTTONS
+        // 
+        //
+        //
+        //
             function filter1(checkbox){
-              if(checkbox.checked == true){
+                fil = [];
                 data = <?= $atcdata ?>;
-                console.log(data);
-                setMarkers(data, 1);
-                document.getElementById("count1").innerHTML = data.length;
+              if(checkbox.checked == true){
+                  if(document.getElementById("customSwitch6").checked == true){
+                    removeMarker("Greater Accra", "count6");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Greater Accra"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 1);
+                    document.getElementById("count6").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch7").checked == true){
+                    removeMarker("Ashanti", "count7");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Ashanti"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 1);
+                    document.getElementById("count7").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch8").checked == true){
+                    removeMarker("Western", "count8");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Western"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 1);
+                    document.getElementById("count8").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch9").checked == true){
+                    removeMarker("Eastern", "count9");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Eastern"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 1);
+                    document.getElementById("count9").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch10").checked == true){
+                    removeMarker("Volta", "count10");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Volta"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 1);
+                    document.getElementById("count10").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch11").checked == true){
+                    removeMarker("Central", "count11");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Central"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 1);
+                    document.getElementById("count11").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch12").checked == true){
+                    removeMarker("Brong Ahafo", "count12");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Brong Ahafo"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 1);
+                    document.getElementById("count12").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch13").checked == true){
+                    removeMarker("Northern", "count13");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Northern"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 1);
+                    document.getElementById("count13").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch14").checked == true){
+                    removeMarker("Upper West", "count14");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Upper West"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 1);
+                    document.getElementById("count14").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch15").checked == true){
+                    removeMarker("Upper East", "count15");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Upper East"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 1);
+                    document.getElementById("count15").innerHTML = fil.length;
+                  }
+                else{
+                    setMarkers(data, 1);
+                    document.getElementById("count1").innerHTML = data.length;
+                }
               }else{
                 removeMarkers("ATC", "count1");
               }
             }
             function filter2(checkbox){
-              if(checkbox.checked == true){
+                fil = [];
                 data = <?= $eatondata ?>;
-                console.log(data);
-                setMarkers(data, 2);
-                document.getElementById("count2").innerHTML = data.length;
+              if(checkbox.checked == true){
+                  if(document.getElementById("customSwitch6").checked == true){
+                    removeMarker("Greater Accra", "count6");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Greater Accra"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 2);
+                    document.getElementById("count6").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch7").checked == true){
+                    removeMarker("Ashanti", "count7");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Ashanti"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 2);
+                    document.getElementById("count7").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch8").checked == true){
+                    removeMarker("Western", "count8");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Western"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 2);
+                    document.getElementById("count8").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch9").checked == true){
+                    removeMarker("Eastern", "count9");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Eastern"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 2);
+                    document.getElementById("count9").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch10").checked == true){
+                    removeMarker("Volta", "count10");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Volta"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 2);
+                    document.getElementById("count10").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch11").checked == true){
+                    removeMarker("Central", "count11");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Central"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 2);
+                    document.getElementById("count11").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch12").checked == true){
+                    removeMarker("Brong Ahafo", "count12");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Brong Ahafo"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 2);
+                    document.getElementById("count12").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch13").checked == true){
+                    removeMarker("Northern", "count13");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Northern"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 2);
+                    document.getElementById("count13").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch14").checked == true){
+                    removeMarker("Upper West", "count14");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Upper West"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 2);
+                    document.getElementById("count14").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch15").checked == true){
+                    removeMarker("Upper East", "count15");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Upper East"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 2);
+                    document.getElementById("count15").innerHTML = fil.length;
+                  }
+                else{
+                    setMarkers(data, 2);
+                    document.getElementById("count2").innerHTML = data.length;
+                }
               }else{
                 removeMarkers("EATON", "count2");
               }
+            
             }
             function filter3(checkbox){
-              if(checkbox.checked == true){
+                fil = [];
                 data = <?= $helios ?>;
-                console.log(data);
-                setMarkers(data, 3);
-                document.getElementById("count3").innerHTML = data.length;
+              if(checkbox.checked == true){
+                  if(document.getElementById("customSwitch6").checked == true){
+                    removeMarker("Greater Accra", "count6");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Greater Accra"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 3);
+                    document.getElementById("count6").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch7").checked == true){
+                    removeMarker("Ashanti", "count7");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Ashanti"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 3);
+                    document.getElementById("count7").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch8").checked == true){
+                    removeMarker("Western", "count8");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Western"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 3);
+                    document.getElementById("count8").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch9").checked == true){
+                    removeMarker("Eastern", "count9");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Eastern"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 3);
+                    document.getElementById("count9").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch10").checked == true){
+                    removeMarker("Volta", "count10");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Volta"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 3);
+                    document.getElementById("count10").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch11").checked == true){
+                    removeMarker("Central", "count11");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Central"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 3);
+                    document.getElementById("count11").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch12").checked == true){
+                    removeMarker("Brong Ahafo", "count12");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Brong Ahafo"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 3);
+                    document.getElementById("count12").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch13").checked == true){
+                    removeMarker("Northern", "count13");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Northern"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 3);
+                    document.getElementById("count13").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch14").checked == true){
+                    removeMarker("Upper West", "count14");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Upper West"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 3);
+                    document.getElementById("count14").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch15").checked == true){
+                    removeMarker("Upper East", "count15");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Upper East"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 3);
+                    document.getElementById("count15").innerHTML = fil.length;
+                  }
+                else{
+                    setMarkers(data, 3);
+                    document.getElementById("count3").innerHTML = data.length;
+                }
               }else{
                 removeMarkers("HELIOS", "count3");
               }
             }
+
             function filter4(checkbox){
-              if(checkbox.checked == true){
+              fil = [];
                 data = <?= $glo ?>;
-                console.log(data);
-                setMarkers(data, 4);
-                document.getElementById("count4").innerHTML = data.length;
+              if(checkbox.checked == true){
+                  if(document.getElementById("customSwitch6").checked == true){
+                    removeMarker("Greater Accra", "count6");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Greater Accra"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 4);
+                    document.getElementById("count6").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch7").checked == true){
+                    removeMarker("Ashanti", "count7");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Ashanti"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 4);
+                    document.getElementById("count7").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch8").checked == true){
+                    removeMarker("Western", "count8");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Western"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 4);
+                    document.getElementById("count8").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch9").checked == true){
+                    removeMarker("Eastern", "count9");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Eastern"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 4);
+                    document.getElementById("count9").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch10").checked == true){
+                    removeMarker("Volta", "count10");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Volta"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 4);
+                    document.getElementById("count10").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch11").checked == true){
+                    removeMarker("Central", "count11");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Central"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 4);
+                    document.getElementById("count11").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch12").checked == true){
+                    removeMarker("Brong Ahafo", "count12");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Brong Ahafo"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 4);
+                    document.getElementById("count12").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch13").checked == true){
+                    removeMarker("Northern", "count13");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Northern"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 4);
+                    document.getElementById("count13").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch14").checked == true){
+                    removeMarker("Upper West", "count14");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Upper West"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 4);
+                    document.getElementById("count14").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch15").checked == true){
+                    removeMarker("Upper East", "count15");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Upper East"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 4);
+                    document.getElementById("count15").innerHTML = fil.length;
+                  }
+                else{
+                    setMarkers(data, 4);
+                    document.getElementById("count4").innerHTML = data.length;
+                }
               }else{
                 removeMarkers("Glomobile", "count4");
               }
             }
             function filter5(checkbox){
-              
+              fil = [];
               if(checkbox.checked == true){
                 if(vall == 1){
                   val = "Ecoband";
@@ -326,116 +784,805 @@
                 else{
                   data = null;
                 }
-                console.log(data);
-                setMarkers(data, 5);
-                document.getElementById("count5").innerHTML = data.length;
+                //
+                //
+                //
+                if(document.getElementById("customSwitch6").checked == true){
+                    removeMarker("Greater Accra", "count6");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Greater Accra"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 5);
+                    document.getElementById("count6").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch7").checked == true){
+                    removeMarker("Ashanti", "count7");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Ashanti"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 5);
+                    document.getElementById("count7").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch8").checked == true){
+                    removeMarker("Western", "count8");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Western"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 5);
+                    document.getElementById("count8").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch9").checked == true){
+                    removeMarker("Eastern", "count9");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Eastern"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 5);
+                    document.getElementById("count9").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch10").checked == true){
+                    removeMarker("Volta", "count10");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Volta"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 5);
+                    document.getElementById("count10").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch11").checked == true){
+                    removeMarker("Central", "count11");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Central"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 5);
+                    document.getElementById("count11").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch12").checked == true){
+                    removeMarker("Brong Ahafo", "count12");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Brong Ahafo"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 5);
+                    document.getElementById("count12").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch13").checked == true){
+                    removeMarker("Northern", "count13");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Northern"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 5);
+                    document.getElementById("count13").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch14").checked == true){
+                    removeMarker("Upper West", "count14");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Upper West"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 5);
+                    document.getElementById("count14").innerHTML = fil.length;
+                  }
+                  else if(document.getElementById("customSwitch15").checked == true){
+                    removeMarker("Upper East", "count15");
+                    for (var i=0; i<data.length; i++) {
+                        if(data[i].region == "Upper East"){
+                            fil.push(data[i]);
+                        }
+                    }
+                    console.log(fil);
+                    setMarkers(fil, 5);
+                    document.getElementById("count15").innerHTML = fil.length;
+                  }
+                else{
+                    setMarkers(data, 4);
+                    document.getElementById("count4").innerHTML = data.length;
+                }
+ 
               
               }
               else{
                 removeMarkers(val, "count5");
               }
             }
+
+
+            // FUNCTIONS FOR REGIONAL BUTTONS
+            //
+            //
+            //
+            //
+            //
+            //
+
             function region1(checkbox){
-              if(checkbox.checked == true){
+                fil = [];
                 data = <?= $accra ?>;
-                console.log(data);
-                setMarkers(data, 1);
-                document.getElementById("count6").innerHTML = data.length;
-              }else{
-                removeMarker("Greater Accra", "count6");
-              }
+                if(checkbox.checked == true){
+                    if(document.getElementById("customSwitch1").checked == true){
+                        removeMarkers("ATC", "count1");
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == "ATC"){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 1);
+                        document.getElementById("count1").innerHTML = fil.length;
+                    }
+                    else if(document.getElementById("customSwitch2").checked == true){
+                            removeMarkers("EATON", "count2");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "EATON"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 2);
+                            document.getElementById("count2").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch3").checked == true){
+                            removeMarkers("HELIOS", "count3");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "HELIOS"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 3);
+                            document.getElementById("count3").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch4").checked == true){
+                            removeMarkers("Glomobile", "count4");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "Glomobile"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 4);
+                            document.getElementById("count4").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch5").checked == true){
+                        var t = document.getElementById("inputGroupSelect04");
+                        var selectedText = t.options[t.selectedIndex].text;
+                        removeMarkers(selectedText, "count5")
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == selectedText){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 5);
+                        document.getElementById("count5").innerHTML = fil.length;
+                    }
+                    else{ 
+                        setMarkers(data, 1);
+                        document.getElementById("count6").innerHTML = data.length;
+                        // for (let i = 0; i < markers.length; i++) {
+                        //     for (let j = 0; j < markers.length; j++) {
+                        //         var distance = haversine_distance(markers[i], markers[j]);
+                        //         console.log(distance);
+                        //     }
+                            
+                        // }
+                     }
+                 
+                } else{
+                    removeMarker("Greater Accra", "count6");
+                }
             }
             function region2(checkbox){
-              if(checkbox.checked == true){
+                fil = [];
                 data = <?= $ashanti ?>;
-                console.log(data);
-                setMarkers(data, 1);
-                document.getElementById("count7").innerHTML = data.length;
-              }else{
-                removeMarker("Ashanti", "count7");
-              }
+                if(checkbox.checked == true){
+                    if(document.getElementById("customSwitch1").checked == true){
+                        removeMarkers("ATC", "count1");
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == "ATC"){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 1);
+                        document.getElementById("count1").innerHTML = fil.length;
+                    }
+                    else if(document.getElementById("customSwitch2").checked == true){
+                            removeMarkers("EATON", "count2");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "EATON"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 2);
+                            document.getElementById("count2").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch3").checked == true){
+                            removeMarkers("HELIOS", "count3");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "HELIOS"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 3);
+                            document.getElementById("count3").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch4").checked == true){
+                            removeMarkers("Glomobile", "count4");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "Glomobile"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 4);
+                            document.getElementById("count4").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch5").checked == true){
+                        var t = document.getElementById("inputGroupSelect04");
+                        var selectedText = t.options[t.selectedIndex].text;
+                        removeMarkers(selectedText, "count5")
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == selectedText){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 5);
+                        document.getElementById("count5").innerHTML = fil.length;
+                    }
+                    else{ 
+                        setMarkers(data, 1);
+                        document.getElementById("count7").innerHTML = data.length;
+                     }
+                 
+                } else{
+                    removeMarker("Ashanti", "count7");
+                }
             }
             function region3(checkbox){
-              if(checkbox.checked == true){
+                fil = [];
                 data = <?= $west ?>;
-                console.log(data);
-                setMarkers(data, 1);
-                document.getElementById("count8").innerHTML = data.length;
-              }else{
-                removeMarker("Western", "count8");
-              }
+                if(checkbox.checked == true){
+                    if(document.getElementById("customSwitch1").checked == true){
+                        removeMarkers("ATC", "count1");
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == "ATC"){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 1);
+                        document.getElementById("count1").innerHTML = fil.length;
+                    }
+                    else if(document.getElementById("customSwitch2").checked == true){
+                            removeMarkers("EATON", "count2");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "EATON"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 2);
+                            document.getElementById("count2").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch3").checked == true){
+                            removeMarkers("HELIOS", "count3");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "HELIOS"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 3);
+                            document.getElementById("count3").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch4").checked == true){
+                            removeMarkers("Glomobile", "count4");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "Glomobile"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 4);
+                            document.getElementById("count4").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch5").checked == true){
+                        var t = document.getElementById("inputGroupSelect04");
+                        var selectedText = t.options[t.selectedIndex].text;
+                        removeMarkers(selectedText, "count5")
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == selectedText){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 5);
+                        document.getElementById("count5").innerHTML = fil.length;
+                    }
+                    else{ 
+                        setMarkers(data, 1);
+                        document.getElementById("count8").innerHTML = data.length;
+                     }
+                 
+                } else{
+                    removeMarker("Western", "count8");
+                }
             }
             function region4(checkbox){
-              if(checkbox.checked == true){
+                fil = [];
                 data = <?= $east ?>;
-                console.log(data);
-                setMarkers(data, 1);
-                document.getElementById("count9").innerHTML = data.length;
-              }else{
-                removeMarker("Eastern", "count9");
-              }
+                if(checkbox.checked == true){
+                    if(document.getElementById("customSwitch1").checked == true){
+                        removeMarkers("ATC", "count1");
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == "ATC"){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 1);
+                        document.getElementById("count1").innerHTML = fil.length;
+                    }
+                    else if(document.getElementById("customSwitch2").checked == true){
+                            removeMarkers("EATON", "count2");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "EATON"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 2);
+                            document.getElementById("count2").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch3").checked == true){
+                            removeMarkers("HELIOS", "count3");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "HELIOS"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 3);
+                            document.getElementById("count3").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch4").checked == true){
+                            removeMarkers("Glomobile", "count4");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "Glomobile"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 4);
+                            document.getElementById("count4").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch5").checked == true){
+                        var t = document.getElementById("inputGroupSelect04");
+                        var selectedText = t.options[t.selectedIndex].text;
+                        removeMarkers(selectedText, "count5")
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == selectedText){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 5);
+                        document.getElementById("count5").innerHTML = fil.length;
+                    }
+                    else{ 
+                        setMarkers(data, 1);
+                        document.getElementById("count9").innerHTML = data.length;
+                     }
+                 
+                } else{
+                    removeMarker("Eastern", "count9");
+                }
             }
             function region5(checkbox){
-              if(checkbox.checked == true){
+                fil = [];
                 data = <?= $volta ?>;
-                console.log(data);
-                setMarkers(data, 1);
-                document.getElementById("count10").innerHTML = data.length;
-              }else{
-                removeMarker("Volta", "count10");
-              }
+                if(checkbox.checked == true){
+                    if(document.getElementById("customSwitch1").checked == true){
+                        removeMarkers("ATC", "count1");
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == "ATC"){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 1);
+                        document.getElementById("count1").innerHTML = fil.length;
+                    }
+                    else if(document.getElementById("customSwitch2").checked == true){
+                            removeMarkers("EATON", "count2");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "EATON"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 2);
+                            document.getElementById("count2").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch3").checked == true){
+                            removeMarkers("HELIOS", "count3");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "HELIOS"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 3);
+                            document.getElementById("count3").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch4").checked == true){
+                            removeMarkers("Glomobile", "count4");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "Glomobile"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 4);
+                            document.getElementById("count4").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch5").checked == true){
+                        var t = document.getElementById("inputGroupSelect04");
+                        var selectedText = t.options[t.selectedIndex].text;
+                        removeMarkers(selectedText, "count5")
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == selectedText){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 5);
+                        document.getElementById("count5").innerHTML = fil.length;
+                    }
+                    else{ 
+                        setMarkers(data, 1);
+                        document.getElementById("count10").innerHTML = data.length;
+                     }
+                 
+                } else{
+                    removeMarker("Volta", "count10");
+                }
             }
             function region6(checkbox){
-              if(checkbox.checked == true){
+                fil = [];
                 data = <?= $central ?>;
-                console.log(data);
-                setMarkers(data, 1);
-                document.getElementById("count11").innerHTML = data.length;
-              }else{
-                removeMarker("Central", "count11");
-              }
+                if(checkbox.checked == true){
+                    if(document.getElementById("customSwitch1").checked == true){
+                        removeMarkers("ATC", "count1");
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == "ATC"){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 1);
+                        document.getElementById("count1").innerHTML = fil.length;
+                    }
+                    else if(document.getElementById("customSwitch2").checked == true){
+                            removeMarkers("EATON", "count2");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "EATON"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 2);
+                            document.getElementById("count2").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch3").checked == true){
+                            removeMarkers("HELIOS", "count3");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "HELIOS"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 3);
+                            document.getElementById("count3").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch4").checked == true){
+                            removeMarkers("Glomobile", "count4");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "Glomobile"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 4);
+                            document.getElementById("count4").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch5").checked == true){
+                        var t = document.getElementById("inputGroupSelect04");
+                        var selectedText = t.options[t.selectedIndex].text;
+                        removeMarkers(selectedText, "count5")
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == selectedText){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 5);
+                        document.getElementById("count5").innerHTML = fil.length;
+                    }
+                    else{ 
+                        setMarkers(data, 1);
+                        document.getElementById("count11").innerHTML = data.length;
+                     }
+                 
+                } else{
+                    removeMarker("Central", "count11");
+                }
             }
             function region7(checkbox){
-              if(checkbox.checked == true){
-                data = <?= $ba ?>;
-                console.log(data);
-                setMarkers(data, 1);
-                document.getElementById("count12").innerHTML = data.length;
-              }else{
-                removeMarker("Brong Ahafo", "count12");
-              }
+                fil = [];
+              data = <?= $ba ?>;
+                if(checkbox.checked == true){
+                    if(document.getElementById("customSwitch1").checked == true){
+                        removeMarkers("ATC", "count1");
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == "ATC"){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 1);
+                        document.getElementById("count1").innerHTML = fil.length;
+                    }
+                    else if(document.getElementById("customSwitch2").checked == true){
+                            removeMarkers("EATON", "count2");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "EATON"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 2);
+                            document.getElementById("count2").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch3").checked == true){
+                            removeMarkers("HELIOS", "count3");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "HELIOS"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 3);
+                            document.getElementById("count3").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch4").checked == true){
+                            removeMarkers("Glomobile", "count4");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == selectedText){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 4);
+                            document.getElementById("count4").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch5").checked == true){
+                        var t = document.getElementById("inputGroupSelect04");
+                        var selectedText = t.options[t.selectedIndex].text;
+                        removeMarkers(selectedText, "count5")
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == "Glomobile"){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 5);
+                        document.getElementById("count5").innerHTML = fil.length;
+                    }
+                    else{ 
+                        setMarkers(data, 1);
+                        document.getElementById("count12").innerHTML = data.length;
+                     }
+                 
+                } else{
+                    removeMarker("Brong Ahafo", "count12");
+                }
             }
             function region8(checkbox){
-              if(checkbox.checked == true){
+                fil = [];
                 data = <?= $north ?>;
-                console.log(data);
-                setMarkers(data, 1);
-                document.getElementById("count13").innerHTML = data.length;
-              }else{
-                removeMarker("Northern", "count13");
-              }
+                if(checkbox.checked == true){
+                    if(document.getElementById("customSwitch1").checked == true){
+                        removeMarkers("ATC", "count1");
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == "ATC"){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 1);
+                        document.getElementById("count1").innerHTML = fil.length;
+                    }
+                    else if(document.getElementById("customSwitch2").checked == true){
+                            removeMarkers("EATON", "count2");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "EATON"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 2);
+                            document.getElementById("count2").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch3").checked == true){
+                            removeMarkers("HELIOS", "count3");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "HELIOS"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 3);
+                            document.getElementById("count3").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch4").checked == true){
+                            removeMarkers("Glomobile", "count4");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "Glomobile"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 4);
+                            document.getElementById("count4").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch5").checked == true){
+                        var t = document.getElementById("inputGroupSelect04");
+                        var selectedText = t.options[t.selectedIndex].text;
+                        removeMarkers(selectedText, "count5")
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == selectedText){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 5);
+                        document.getElementById("count5").innerHTML = fil.length;
+                    }
+                    else{ 
+                        setMarkers(data, 1);
+                        document.getElementById("count13").innerHTML = data.length;
+                     }
+                 
+                } else{
+                    removeMarker("Northern", "count13");
+                }
             }
             function region9(checkbox){
-              if(checkbox.checked == true){
+                fil = [];
                 data = <?= $uw ?>;
-                console.log(data);
-                setMarkers(data, 1);
-                document.getElementById("count14").innerHTML = data.length;
-              }else{
-                removeMarker("Upper West", "count14");
-              }
+                if(checkbox.checked == true){
+                    if(document.getElementById("customSwitch1").checked == true){
+                        removeMarkers("ATC", "count1");
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == "ATC"){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 1);
+                        document.getElementById("count1").innerHTML = fil.length;
+                    }
+                    else if(document.getElementById("customSwitch2").checked == true){
+                            removeMarkers("EATON", "count2");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "EATON"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 2);
+                            document.getElementById("count2").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch3").checked == true){
+                            removeMarkers("HELIOS", "count3");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "HELIOS"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 3);
+                            document.getElementById("count3").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch4").checked == true){
+                            removeMarkers("Glomobile", "count4");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "Glomobile"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 4);
+                            document.getElementById("count4").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch5").checked == true){
+                        var t = document.getElementById("inputGroupSelect04");
+                        var selectedText = t.options[t.selectedIndex].text;
+                        removeMarkers(selectedText, "count5")
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == selectedText){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 5);
+                        document.getElementById("count5").innerHTML = fil.length;
+                    }
+                    else{ 
+                        setMarkers(data, 1);
+                        document.getElementById("count14").innerHTML = data.length;
+                     }
+                 
+                } else{
+                    removeMarker("Upper West", "count14");
+                }
             }
             function region10(checkbox){
-              if(checkbox.checked == true){
+                fil = [];
                 data = <?= $ue ?>;
-                console.log(data);
-                setMarkers(data, 1);
-                document.getElementById("count15").innerHTML = data.length;
-              }else{
-                removeMarker("Upper East", "count15");
-              }
+                if(checkbox.checked == true){
+                    if(document.getElementById("customSwitch1").checked == true){
+                        removeMarkers("ATC", "count1");
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == "ATC"){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 1);
+                        document.getElementById("count1").innerHTML = fil.length;
+                    }
+                    else if(document.getElementById("customSwitch2").checked == true){
+                            removeMarkers("EATON", "count2");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "EATON"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 2);
+                            document.getElementById("count2").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch3").checked == true){
+                            removeMarkers("HELIOS", "count3");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "HELIOS"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 3);
+                            document.getElementById("count3").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch4").checked == true){
+                            removeMarkers("Glomobile", "count4");
+                            for (var i=0; i<data.length; i++) {
+                                if(data[i].tower_owner == "Glomobile"){
+                                    fil.push(data[i]);
+                                }
+                            }
+                            setMarkers(fil, 4);
+                            document.getElementById("count4").innerHTML = fil.length;
+                        }
+                    else if(document.getElementById("customSwitch5").checked == true){
+                        var t = document.getElementById("inputGroupSelect04");
+                        var selectedText = t.options[t.selectedIndex].text;
+                        removeMarkers(selectedText, "count5")
+                        for (var i=0; i<data.length; i++) {
+                            if(data[i].tower_owner == selectedText){
+                                fil.push(data[i]);
+                            }
+                        }
+                        setMarkers(fil, 5);
+                        document.getElementById("count5").innerHTML = fil.length;
+                    }
+                    else{ 
+                        setMarkers(data, 1);
+                        document.getElementById("count15").innerHTML = data.length;
+                        // console.log(markers);
+                        // for (let i = 0; i < markers.length; i++) {
+                        //     for (let j = 0; j < markers.length; j++) {
+                        //         var distance = haversine_distance(markers[i], markers[j]);
+                        //         console.log(distance);
+                        //     }
+                            
+                        // }
+                     }
+                 
+                } else{
+                    removeMarker("Upper East", "count15");
+                }
             }
-            
             function switchTelco(sel){
               vall = sel.selectedIndex;
               console.log(vall);
@@ -451,6 +1598,8 @@
                 var coverage;
                 var point;
                 var png;
+                var lat;
+                var lng;
               for(var x in data){
                 tower = data[x];
                 company = tower.tower_owner;
@@ -459,6 +1608,8 @@
                 region = tower.region;
                 coverage = tower.coverage;
                 point = new google.maps.LatLng(tower.latitude, tower.longitude);
+                lat = tower.latitude;
+                lng = tower.longitude;
                 if(num == 1){
                   png ="redtower.png";
                 }else if(num == 2){
@@ -475,16 +1626,15 @@
                   position: point,
                   title: tower.tower_owner,
                   reg: region,
+                  dist: district,
                   icon: '../assets/img/maps/'+png,
                   map: map
                 });
                 markers.push(marker);
-                addInfoWindow(marker, InfoContent, company, siteId, district, region, coverage);
-                
+                addInfoWindow(marker, InfoContent, company, siteId, district, region, coverage, point, lat, lng);             
               }
             }
             function removeMarkers(type, count){
-                console.log(markers);
               for (var i=0; i<markers.length; i++) {
                 if(markers[i].title == type){
                   markers[i].setMap(null);
@@ -493,7 +1643,6 @@
               document.getElementById(count).innerHTML = "";
             }
             function removeMarker(type, count){
-                console.log(markers);
               for (var i=0; i<markers.length; i++) {
                 if(markers[i].reg == type){
                   markers[i].setMap(null);
@@ -501,17 +1650,18 @@
               }
               document.getElementById(count).innerHTML = "";
             }
-              function addInfoWindow(marker, message, company, siteId, district, region, coverage) {
+            function addInfoWindow(marker, message, company, siteId, district, region, coverage, point, lat, lng) {
                 InfoContent = '<div id="content">'+
                   '<div id="siteNotice">'+
                   '</div>'+
                   '<h5 id="firstHeading" class="firstHeading"><strong>'+company+'</strong></h5>'+
                   '<div id="bodyContent">'+
                   '<ul>'+
-                  '<li><b>Site ID</b>:   '+siteId+'</li>'+
+                  '<li><b>Tower ID</b>:   '+siteId+'</li>'+
                   '<li><b>District</b>:   '+district+'</li>'+
-                  '<li><b>Location</b>:   '+region+'</li>'+
-                  '<li><b>Status</b>:   '+coverage+'</li>'+
+                  '<li><b>Region</b>:   '+region+'</li>'+
+                  '<li><b>Coverage</b>:   '+coverage+'</li><br>'+
+                  '<button onclick="createCircle('+lat+','+lng+')">Set Radius</button>'+
                   '</ul>'+
                   '</div>'+
                   '</div>';
@@ -524,12 +1674,52 @@
                     infoWindow.open(map, marker);
                 });
             }
-        
+            // function haversine_distance(mk1, mk2) {
+            //     var R = 6371.0710; // Radius of the Earth in KM
+            //     var rlat1 = mk1.position.lat() * (Math.PI/180); // Convert degrees to radians
+            //     var rlat2 = mk2.position.lat() * (Math.PI/180); // Convert degrees to radians
+            //     var difflat = rlat2-rlat1; // Radian difference (latitudes)
+            //     var difflon = (mk2.position.lng()-mk1.position.lng()) * (Math.PI/180); // Radian difference (longitudes)
+
+            //     var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat/2)*Math.sin(difflat/2)+Math.cos(rlat1)*Math.cos(rlat2)*Math.sin(difflon/2)*Math.sin(difflon/2)));
+            //     return d;
+            // }
+            // function removeCircle(){
+            //     console.log(circles)
+            // }
+
+            function createCircle(lat, lng){
+                console.log("lat:"+lat+"  long:"+lng);
+                var circle = new google.maps.Circle({
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.35,
+                    map: map,
+                    center: new google.maps.LatLng(lat, lng),
+                    radius: 400,
+                    editable: true,
+                    draggable: true
+                });
+                circles.push(circle);
+                google.maps.event.addListener(circle, 'radius_changed', function() {
+                    document.getElementById("radius").value = circle.getRadius().toFixed(2)+"m radius";
+                });
+                google.maps.event.addListener(circle, 'dblclick', function() {
+                    circle.setMap(null);
+                });
+                google.maps.event.addListener(circle, 'center_changed', function() {
+                    document.getElementById("center").value = "Center:"+circle.getCenter();
+                });
+                
+            }
             
             function initMap() {
               map = new google.maps.Map(document.getElementById('map'), {
                 center: new google.maps.LatLng(7.94653, -1.02319),
-                zoom: 6.8
+                zoom: 6.8,
+                mapTypeId: 'hybrid'
               });
               var geocoder = new google.maps.Geocoder();
               document.getElementById('search').addEventListener('click', function(){
@@ -545,12 +1735,16 @@
               geocoder.geocode({'address': address}, function(results, status) {
                 
                 if (status === 'OK') {
-                  resultsMap.setCenter(results[0].geometry.location);
+                    console.log(results);
+                //   resultsMap.setCenter(results[0].geometry.location);
+                //   bounds.extend(results[0].geometry.location);
                   // var marker = new google.maps.Marker({
                   //   map: resultsMap,
                   //   position: results[0].geometry.location
                   // });
-                  resultsMap.setZoom(10);
+                //   resultsMap.setZoom(18);
+                  resultsMap.fitBounds(results[0].geometry.bounds); 
+                  resultsMap.panToBounds(results[0].geometry.bounds);
                 } else {
                   alert('Geocode was not successful for the following reason: ' + status);
                 }
@@ -574,7 +1768,7 @@
                             map: map
                         });
                         resultsMap.setCenter(new google.maps.LatLng(tow[i].latitude, tow[i].longitude));
-                        resultsMap.setZoom(14);
+                        resultsMap.setZoom(30);
                         ins = true;
                     }
                 }

@@ -15,11 +15,16 @@ class TowersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         //
-        $towers = DB::table('towers')->orderBy('created_at', 'desc')->paginate(15);
-        return view('tables')->with('towers', $towers);
+        $towers = DB::table('towers')->orderBy('created_at', 'desc')->get();
+        return view('dashboard')->with('towers', $towers);
     }
 
     /**
@@ -41,29 +46,35 @@ class TowersController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'siteId' => 'required',
-            'company' => 'required',
+            'system' => 'required',
+            'towerId' => 'required',
+            'towerOwner' => 'required',
+            'towerName' => 'required',
             'district' => 'required',
-            'location' => 'required',
+            'region' => 'required',
             'lat' => 'required',
             'lng' => 'required',
-            'status' => 'required'
+            'coverage' => 'required',
+            'siteCount' => 'required'
 
         ]);
         //Create Nwe Tower
         $tower = new Tower;
-        $tower->company = $request->company;
-        $tower->site_id = $request->siteId;
+        $tower->system_code = $request->system;
+        $tower->tower_id = $request->towerId;
+        $tower->tower_owner = $request->towerOwner;
+        $tower->tower_name = $request->towerName;
         $tower->district = $request->district;
-        $tower->location = $request->location;
-        $tower->lat = $request->lat;
-        $tower->lng = $request->lng;
-        $tower->status = $request->status;
+        $tower->region = $request->region;
+        $tower->latitude = $request->lat;
+        $tower->longitude = $request->lng;
+        $tower->coverage = $request->coverage;
+        $tower->site_count = $request->siteCount;
         $tower->user_id = 0;
 
         $tower->save();
 
-        return redirect('/tables')->withSucess('New Tower Created Successfully');
+        return redirect('/dashboard')->withSuccess('New Tower Created Successfully');
     }
 
     /**

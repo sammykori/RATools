@@ -11,15 +11,10 @@
 |
 */
 
-Route::get('/dashboard', 'PagesController@index');
-Route::get('/tables', 'TowersController@index');
-Route::get('/maps', 'PagesController@map');
-Route::get('/main', 'PagesController@new');
+Route::get('/dashboard', 'TowersController@index');
 
 Route::resource('towers', 'TowersController');
 
-Route::get('/maps', 'MapsController@index');
 Route::get('/', 'MapsController@main');
 Auth::routes();
 
-Route::get('/dashboard', 'DashboardController@index')->name('home');
