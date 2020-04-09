@@ -25,7 +25,7 @@
             </form>
             <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
                 <div class="input-group">
-                    <input id="address" class="form-control" type="text" value= "" placeholder="Search a Location" aria-label="Search" aria-describedby="basic-addon2" />
+                    <input id="address" class="form-control" type="text" value= "" placeholder="Search a Location" aria-label="Search" aria-describedby="basic-addon2" autocomplete/>
                     <div class="input-group-append">
                         <button id = "search" class="btn btn-primary" type="button"><i class="fab fa-google " style="color:yellow"></i></button>
                     </div>
@@ -193,7 +193,9 @@
             var data;
             var map;
             var marker;
+            var mark;
             var InfoContent;
+            var siteContent;
             var markers = [];
             var vall;
             var val;
@@ -691,6 +693,7 @@
                   }
                 else{
                     setMarkers(data, 4);
+                    console.log(markers);
                     document.getElementById("count4").innerHTML = data.length;
                 }
               }else{
@@ -1688,32 +1691,7 @@
             //     console.log(circles)
             // }
 
-            function createCircle(lat, lng){
-                console.log("lat:"+lat+"  long:"+lng);
-                var circle = new google.maps.Circle({
-                    strokeColor: '#FF0000',
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: '#FF0000',
-                    fillOpacity: 0.35,
-                    map: map,
-                    center: new google.maps.LatLng(lat, lng),
-                    radius: 400,
-                    editable: true,
-                    draggable: true
-                });
-                circles.push(circle);
-                google.maps.event.addListener(circle, 'radius_changed', function() {
-                    document.getElementById("radius").value = circle.getRadius().toFixed(2)+"m radius";
-                });
-                google.maps.event.addListener(circle, 'dblclick', function() {
-                    circle.setMap(null);
-                });
-                google.maps.event.addListener(circle, 'center_changed', function() {
-                    document.getElementById("center").value = "Center:"+circle.getCenter();
-                });
-                
-            }
+            
             
             function initMap() {
               map = new google.maps.Map(document.getElementById('map'), {
@@ -1753,20 +1731,34 @@
             function siteSearch(resultsMap){
                 var address = document.getElementById('site').value;
                 var tow = <?= $towers ?>;
-                var mark;
                 var ins;
+                var company;
+                var siteId;
+                var district;
+                var region;
+                var coverage;
+                var lat;
+                var lng;
 
                 for (var i=0; i<tow.length; i++) {
                     if(tow[i].tower_id == address){
+                        company = tow[i].tower_owner;
+                        siteId = tow[i].tower_id;
+                        district = tow[i].district;
+                        region = tow[i].region;
+                        coverage = tow[i].coverage;
+                        lat = tow[i].latitude;
+                        lng = tow[i].longitude;
                         console.log(tow[i]);
-                        point = new google.maps.LatLng(tow[i].latitude, tow[i].longitude);
+                        point = new google.maps.LatLng(lat, lng);
                         mark = new google.maps.Marker({
                             position: point,
-                            title: tow[i].tower_owner,
-                            reg: tow[i].region,
+                            title: company,
+                            reg: region,
                             icon: '../assets/img/maps/redtower.png',
                             map: map
                         });
+                        siteWindow(mark, siteContent, company, siteId, district, region, coverage, point, lat, lng);
                         resultsMap.setCenter(new google.maps.LatLng(tow[i].latitude, tow[i].longitude));
                         resultsMap.setZoom(30);
                         ins = true;
@@ -1776,10 +1768,83 @@
                     alert("Tower ID non existent")
                 }
             }
+            function siteWindow(mark, message, company, siteId, district, region, coverage, point, lat, lng) {
+                siteContent = '<div id="content">'+
+                  '<div id="siteNotice">'+
+                  '</div>'+
+                  '<h5 id="firstHeading" class="firstHeading"><strong>'+company+'</strong></h5>'+
+                  '<div id="bodyContent">'+
+                  '<ul>'+
+                  '<li><b>Tower ID</b>:   '+siteId+'</li>'+
+                  '<li><b>District</b>:   '+district+'</li>'+
+                  '<li><b>Region</b>:   '+region+'</li>'+
+                  '<li><b>Coverage</b>:   '+coverage+'</li><br>'+
+                  '<button onclick="createCircle('+lat+','+lng+')">Set Radius</button><button onclick="removeMark()">Remove Marker</button>'+
+                  '</ul>'+
+                  '</div>'+
+                  '</div>';
+        
+                var siteWindow = new google.maps.InfoWindow({
+                    content: siteContent
+                });
+        
+                google.maps.event.addListener(mark, 'click', function () {
+                    siteWindow.open(map, mark);
+                    console.log("hello");
+                });
+            }
+            function removeMark(){
+                mark.setMap(null);
+            }
+            function createCircle(lat, lng){
+                var bounce = [];
+                var circle = new google.maps.Circle({
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.35,
+                    map: map,
+                    center: new google.maps.LatLng(lat, lng),
+                    radius: 400,
+                    editable: true,
+                    draggable: true
+                });
+                circles.push(circle);
+                google.maps.event.addListener(circle, 'radius_changed', function() {
+                    document.getElementById("radius").value = circle.getRadius().toFixed(2)+"m radius";
+                });
+                google.maps.event.addListener(circle, 'dblclick', function() {
+                    circle.setMap(null);
+                    if(bounce.length > 0){
+                        for (let i = 0; i < bounce.length; i++) {
+                            markers[bounce[i]].setAnimation(null);
+                            
+                        }
+                    }
+                    
+                });
+                google.maps.event.addListener(circle, 'center_changed', function() {
+                    document.getElementById("center").value = "Center:"+circle.getCenter();
+                });
+
+                for (let index = 0; index < markers.length; index++) {
+                    if (google.maps.geometry.spherical.computeDistanceBetween(markers[index].getPosition(), circle.getCenter()) <= circle.getRadius()) {
+                        console.log(index);
+                        bounce.push(index);
+                        markers[index].setAnimation(google.maps.Animation.BOUNCE);
+                               
+                        // markers[index].setAnimation(null);                                                                                                       );
+                    }
+                    
+                }
+
+                
+            }
         
             
           </script>
         
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvGJHZHs-IUPfKMmwmNopbl9UsKr0rqMA&callback=initMap"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyCvGJHZHs-IUPfKMmwmNopbl9UsKr0rqMA&callback=initMap"></script>
     </body>
 </html>
